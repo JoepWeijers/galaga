@@ -9,21 +9,25 @@ function dropAsteroid (asteroid: game.LedSprite) {
     asteroid.delete()
 }
 joystickbit.onButtonEvent(joystickbit.JoystickBitPin.P12, joystickbit.ButtonType.down, function () {
-    laser = game.createSprite(spaceship_x, spaceship_y)
-    laser.set(LedSpriteProperty.Blink, 180)
-    laser.set(LedSpriteProperty.Direction, 0)
-    basic.pause(150)
-    for (let index = 0; index < 4; index++) {
-        laser.move(1)
+    if (!(laser_moving)) {
+        laser_moving = true
+        laser = game.createSprite(spaceship_x, spaceship_y)
+        laser.set(LedSpriteProperty.Blink, 180)
+        laser.set(LedSpriteProperty.Direction, 0)
         basic.pause(150)
-        if (laser.get(LedSpriteProperty.Y) == 0) {
-            break;
+        for (let index = 0; index < 4; index++) {
+            laser.move(1)
+            basic.pause(150)
+            if (laser.get(LedSpriteProperty.Y) == 0) {
+                break;
+            }
         }
+        laser.delete()
+        laser_moving = false
     }
-    laser.delete()
-    basic.pause(1000)
 })
 let laser: game.LedSprite = null
+let laser_moving = false
 let asteroid_speed = 0
 let spaceship_y = 0
 let spaceship_x = 0
@@ -36,6 +40,7 @@ let asteroid1 = game.createSprite(0, 0)
 asteroid1.delete()
 let asteroid2 = game.createSprite(0, 0)
 asteroid2.delete()
+laser_moving = false
 laser = game.createSprite(0, 0)
 laser.set(LedSpriteProperty.Brightness, 0)
 laser.delete()
